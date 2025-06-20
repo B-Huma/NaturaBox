@@ -1,0 +1,28 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var orderCode = ViewBag.OrderCode as string;
+}
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Fresh and Organic</p>
+					<h1>Thank You For Your Order</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end breadcrumb section -->
+
+<div class="container mt-5">
+	<div class="alert alert-success text-center">
+		<h2>Thank you for your order!</h2>
+		<p>Your order number is:</p>
+		<h3 class="text-primary">@orderCode</h3>
+		<p>We will notify you when your order is shipped.</p>
+		<a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">Back to Home</a>
+	</div>
+</div>

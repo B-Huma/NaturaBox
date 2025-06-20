@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdminMvc\App.AdminMvc.csproj" />
+    <ProjectReference Include="..\App.Business\App.Business.csproj" />
+    <ProjectReference Include="..\App.DataApi\App.DataApi.csproj" />
+    <ProjectReference Include="..\App.Data\App.Data.csproj" />
+    <ProjectReference Include="..\App.DTO\App.DTO.csproj" />
+    <ProjectReference Include="..\e-TicaretApp.Mvc\App.eTicaretApp.Mvc.csproj" />
+  </ItemGroup>
+
+</Project>

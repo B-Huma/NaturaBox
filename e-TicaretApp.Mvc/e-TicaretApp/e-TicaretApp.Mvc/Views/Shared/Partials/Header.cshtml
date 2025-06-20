@@ -1,0 +1,61 @@
+﻿<!-- PreLoader -->
+<div class="loader">
+    <div class="loader-inner">
+        <div class="circle"></div>
+    </div>
+</div>
+<!-- PreLoader Ends -->
+<!-- Header -->
+<div class="top-header-area" id="sticker">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-center">
+                <div class="main-menu-wrap">
+                    <!-- Logo -->
+                    <div class="site-logo">
+                        <a asp-controller="Home" asp-action="Index">
+                            <img src="~/assets/img/logo.png" alt="">
+                        </a>
+                    </div>
+                    <!-- Logo -->
+                    <!-- Menu Start -->
+                    <nav class="main-menu">
+                        <ul>
+                            <li class="current-list-item">
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li><a asp-controller="Home" asp-action="AboutUs">About</a></li>
+                            <li><a asp-controller="Home" asp-action="Listing">Shop</a></li>
+                            <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            <li>
+                                <div class="header-icons">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                                        <a asp-controller="Profile" asp-action="Details" asp-route-id="@userId"><i class="fa fa-user-circle"></i> Profile</a>
+                                        <a asp-controller="Auth" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Auth" asp-action="Login"><i class="fa fa-user"></i> Login</a>
+                                    }
+
+
+                                    <!-- Sepet ve Arama -->
+                                    <a class="shopping-cart" asp-controller="Cart" asp-action="CartDetails"><i class="fas fa-shopping-cart"></i></a>
+                                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                </div>
+
+
+                            </li>
+                        </ul>
+                    </nav>
+                    <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                    <div class="mobile-menu"></div>
+                    <!-- Menu End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Header -->

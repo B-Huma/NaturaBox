@@ -1,0 +1,75 @@
+﻿@model e_TicaretApp.Mvc.Models.ViewModels.ProductCreateViewModel
+
+@{
+	ViewData["Title"] = "Edit Product";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Fresh and Organic</p>
+					<h1>Edit Product</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end breadcrumb section -->
+<div class="product-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<h2 class="text-center mb-4">Edit Product</h2>
+				<form asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+					<input type="hidden" asp-for="Id" />
+					<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+					<div class="form-group mb-3">
+						<label asp-for="Name" class="form-label">Product Name</label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="Price" class="form-label">Price</label>
+						<input asp-for="Price" class="form-control" />
+						<span asp-validation-for="Price" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="Details" class="form-label"></label>
+						<textarea asp-for="Details" class="form-control" rows="4"></textarea>
+						<span asp-validation-for="Details" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="StockAmount" class="form-label"></label>
+						<input asp-for="StockAmount" type="number" class="form-control" />
+						<span asp-validation-for="StockAmount" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="CategoryId" class="form-label">Category</label>
+						<select asp-for="CategoryId" class="form-select" asp-items="Model.Categories">
+							<option value="">--Select Category--</option>
+						</select>
+						<span asp-validation-for="CategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group mb-3">
+						<label asp-for="ImageFile" class="form-label">Product Image</label>
+						<input asp-for="ImageFile" type="file" class="form-control" />
+						<span class="text-muted"> Current Image
+							<img src="@Model.CurrentImageUrl" style="max-height:100px" class="mt-2" />
+						</span>
+					</div>
+
+					<div>
+						<button type="submit" class="btn btn-primary">Update Product</button>
+						<button asp-controller="Home" asp-action="Listing" class="btn btn-secondary">Cancel</button>
+						<a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');"><i class="fas fa-trash"></i>Delete</a>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

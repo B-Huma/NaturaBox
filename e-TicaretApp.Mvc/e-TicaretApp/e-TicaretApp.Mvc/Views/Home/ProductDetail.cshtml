@@ -1,0 +1,115 @@
+﻿@using e_TicaretApp.Mvc.Models.ViewModels
+@model ProductDetailViewModel
+
+@{
+	ViewBag.Title = "Single Product";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>See more Details</p>
+					<h1>Single Product</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end breadcrumb section -->
+<!-- single product -->
+<div class="single-product mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="single-product-img">
+					<img src="@Model.ImageUrl" alt="">
+				</div>
+			</div>
+			<div class="col-md-7">
+				<div class="single-product-content">
+					<h3>@Model.Name</h3>
+					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
+					<p>@Model.Details</p>
+					<div class="single-product-form">
+						<form asp-controller="Cart" asp-action="AddProduct">
+							<input type="hidden" name="productId" value="@Model.Id" />
+							<input type="number" name="quantity" value="1" min="1">
+@* 							<button type="submit" class="cart-btn" ><i class="fas fa-shopping-cart">Add to Cart</i></button>
+ *@						</form>
+						<a asp-controller="Cart" asp-action="AddProduct" asp-route-productId="@Model.Id" asp-route-quantity="1"  class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<p><strong>Categories: </strong>@Model.CategoryName</p>
+					</div>
+					<h4>Share:</h4>
+					<ul class="product-share">
+						<li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+						<li><a href=""><i class="fab fa-twitter"></i></a></li>
+						<li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+						<li><a href=""><i class="fab fa-linkedin"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end single product -->
+<div class="container mt-5">
+	<h4>Leave a Comment</h4>
+	@if (User.Identity.IsAuthenticated)
+	{
+		<form asp-controller="Product" asp-action="Comment" method="post">
+			<input type="hidden" name="ProductId" value="@Model.Id" />
+			<div class="form-group">
+				<label for="Text">Comment</label>
+				<textarea name="Text" class="form-control" rows="3" required></textarea>
+			</div>
+			<div class="form-group">
+				<label for="StarCount">Star Rating (1-5)</label>
+				<input type="number" name="StarCount" min="1" max="5" class="form-control" required />
+			</div>
+			<button type="submit" class="btn btn-primary mt-2">Submit</button>
+		</form>
+	}
+	else
+	{
+		<p>Please <a asp-controller="Auth" asp-action="Login">Login</a> to leave a comment</p>
+	}
+
+	<h3 class="mt-5 mb-3">Customer Reviews (@Model.Comments.Count)</h3>
+
+	@if (Model.Comments != null && Model.Comments.Any())
+	{
+	    <div class="list-group">
+	        @foreach (var comment in Model.Comments)
+	        {
+	            <div class="list-group-item mb-3 shadow-sm rounded">
+	                <div class="d-flex justify-content-between align-items-center">
+	                    <strong class="text-primary">@comment.UserName</strong>
+	                </div>
+	
+	                <div class="mt-2 text-warning">
+	                    @for (int i = 0; i < comment.StarCount; i++)
+	                    {
+	                        <i class="fas fa-star"></i>
+	                    }
+	                    @for (int i = comment.StarCount; i < 5; i++)
+	                    {
+	                        <i class="far fa-star"></i>
+	                    }
+	                </div>
+	
+	                <p class="mt-2">@comment.Text</p>
+	            </div>
+	        }
+	    </div>
+	}
+	else
+	{
+	    <p class="text-muted">There are no reviews yet.</p>
+	}
+
+</div>
+

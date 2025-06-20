@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<partial name="Partials/PageHead.cshtml" />
+
+</head>
+<body>
+
+	<partial name="Partials/Header.cshtml" />
+
+	<partial name="Partials/SearchArea.cshtml" />
+
+	@RenderBody()
+
+	<partial name="Partials/LogoCarousel.cshtml" />
+
+	<partial name="Partials/Footer.cshtml" />
+
+	<partial name="Partials/Copyright.cshtml" />
+
+	<partial name="Partials/PageScripts.cshtml" />
+
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

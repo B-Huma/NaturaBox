@@ -1,0 +1,77 @@
+﻿@using AdminMvc.Models.ViewModels
+@model CategoryViewModel
+
+
+
+@{
+    ViewBag.Title = "Edit Category";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<h2>Create New Category</h2>
+<div class="container mt-150 mb-150">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center mb-4">Add New Category</h2>
+            <form asp-controller="Category" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label">Category Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Color" class="form-label">Color</label>
+                    <input asp-for="Color" type="color" class="form-control" />
+                    <span asp-validation-for="Color" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Choose Icon</label>
+                    <div id="iconSelector" class="d-flex flex-wrap gap-3 border p-3 mb-2" style="cursor:pointer;">
+                        @{
+                            var icons = new[] {
+                                                "fa-solid fa-seedling","fa-solid fa-baby","fa-solid fa-soap","fa-solid fa-plate-wheat",
+                                                "fa-solid fa-lemon", "fa-solid fa-carrot", "fa-solid fa-apple-whole"
+                                                };
+                            foreach (var icon in icons)
+                            {
+                                <i class="@icon icon-option border p-2 rounded"
+                                   data-icon="@icon"
+                                   style="font-size:24px;"></i>
+                            }
+                        }
+                    </div>
+                    
+                    <input asp-for="IconCssClass" id="IconCssClass" class="form-control" readonly />
+                    <span asp-validation-for="IconCssClass" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelectorAll('.icon-option').forEach(icon => {
+            icon.addEventListener('click', function () {
+                // Tüm ikonlardan seçimi kaldır
+                document.querySelectorAll('.icon-option').forEach(i => i.classList.remove('bg-primary', 'text-white'));
+
+                // Seçilen ikonu vurgula
+                this.classList.add('bg-primary', 'text-white');
+
+                // Class'ı input'a yaz
+                const selectedIcon = this.getAttribute('data-icon');
+                document.getElementById('IconCssClass').value = selectedIcon;
+            });
+        });
+    </script>
+}

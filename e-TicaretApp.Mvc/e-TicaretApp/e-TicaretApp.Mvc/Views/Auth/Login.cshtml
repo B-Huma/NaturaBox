@@ -1,0 +1,45 @@
+﻿@using e_TicaretApp.Mvc.Models.ViewModels
+@model LoginViewModel
+@{
+	ViewBag.Title = "Login";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<h1>Login</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container contact-form-section mt-150 mb-150">
+    <div class="row">
+        <h2 class="col-12 text-center">Login</h2>
+        <div class="col-12 col-md-6 offset-md-3">
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success site-btn mr-auto">Login</button>
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-success site-btn mr-2">Register</a>
+                    <a asp-controller="Auth" asp-action="ForgotPassword" class="btn btn-success site-btn">Forgot Password</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
