@@ -53,8 +53,7 @@ namespace AdminMvc.Controllers
             return RedirectToAction("List", "Product");
         }
 
-        [Route("/edit/{id}")]
-        [HttpGet]
+        [HttpGet("/category/edit/{id}")]
         public async Task<IActionResult> Edit([FromRoute]int id)
         {
             
@@ -63,8 +62,7 @@ namespace AdminMvc.Controllers
             var existingCategory = _mapper.Map<CategoryViewModel>(category);
             return View(existingCategory);
         }
-        [Route("/edit/{id}")]
-        [HttpPost]
+        [HttpPost("/category/edit/{id}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromForm] CategoryViewModel model)
         {
             if (id != model.Id)

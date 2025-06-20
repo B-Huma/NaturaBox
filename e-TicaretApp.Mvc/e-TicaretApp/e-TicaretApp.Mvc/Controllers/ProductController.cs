@@ -47,8 +47,7 @@ namespace e_TicaretApp.Mvc.Controllers
         }
 
         [Authorize]
-        [Route("/edit/{id}")]
-        [HttpGet]
+        [HttpGet("/product/edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var dto = await _productService.GetProductDetail(id);
@@ -57,8 +56,7 @@ namespace e_TicaretApp.Mvc.Controllers
         }
 
         [Authorize]
-        [Route("/edit/{id}")]
-        [HttpPost]
+        [HttpPost("/product/edit/{id}")]
         public async Task<IActionResult> Edit(int id, ProductCreateViewModel product)
         {
             var dto = _mapper.Map<ProductUpdateDTO>(product);

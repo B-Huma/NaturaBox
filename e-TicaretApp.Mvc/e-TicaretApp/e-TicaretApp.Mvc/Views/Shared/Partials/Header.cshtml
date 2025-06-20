@@ -29,7 +29,7 @@
                             <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                             <li>
                                 <div class="header-icons">
-                                    @if (User.Identity.IsAuthenticated)
+                                    @if (User?.Identity?.IsAuthenticated is true)
                                     {
                                         var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
                                         <a asp-controller="Profile" asp-action="Details" asp-route-id="@userId"><i class="fa fa-user-circle"></i> Profile</a>

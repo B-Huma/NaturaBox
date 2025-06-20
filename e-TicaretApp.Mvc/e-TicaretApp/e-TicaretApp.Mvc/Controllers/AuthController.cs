@@ -50,20 +50,12 @@ namespace e_TicaretApp.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] LoginViewModel loginModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(loginModel);
-            }
-
-            var loginResponse = await _auth.LoginRequestAsync(new LoginRequestDTO
-            {
-                Email = loginModel.Email,
-                Password = loginModel.Password,
-            });
+            var dto = _mapper.Map<LoginRequestDTO>(loginModel);
+            var loginResponse = await _auth.LoginRequestAsync(dto);
 
             if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
             {
-                ModelState.AddModelError("", "Geçersiz e-posta veya şifre.");
+                ModelState.AddModelError("", "Invalid Credentials");
                 return View(loginModel);
             }
 
@@ -110,7 +102,7 @@ namespace e_TicaretApp.Mvc.Controllers
             return RedirectToAction("Details", "Profile", new { id = model.UserId });
         }
         [Authorize]
-        [Route("/logout")]
+        [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
             await _auth.Logout();

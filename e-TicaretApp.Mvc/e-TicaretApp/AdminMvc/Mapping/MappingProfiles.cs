@@ -9,7 +9,7 @@ namespace AdminMvc.Mapping
         public MappingProfiles()
         {
             CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
-
+            CreateMap<LoginViewModel, LoginRequestDTO>().ReverseMap();
         }
     }
 }

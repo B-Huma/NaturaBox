@@ -12,12 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdminMvc\App.AdminMvc.csproj" />
+    <ProjectReference Include="..\AdminMvc\AdminMvc.csproj" />
     <ProjectReference Include="..\App.Business\App.Business.csproj" />
     <ProjectReference Include="..\App.DataApi\App.DataApi.csproj" />
     <ProjectReference Include="..\App.Data\App.Data.csproj" />
     <ProjectReference Include="..\App.DTO\App.DTO.csproj" />
-    <ProjectReference Include="..\e-TicaretApp.Mvc\App.eTicaretApp.Mvc.csproj" />
+    <ProjectReference Include="..\e-TicaretApp.Mvc\e-TicaretApp.Mvc.csproj" />
   </ItemGroup>
 
 </Project>

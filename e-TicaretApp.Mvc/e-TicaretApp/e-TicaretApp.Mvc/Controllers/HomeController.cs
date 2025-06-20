@@ -26,7 +26,6 @@ namespace e_TicaretApp.Mvc.Controllers
             return View();
         }
 
-        [Route("about-us")]
         public IActionResult AboutUs()
         {
             return View();
