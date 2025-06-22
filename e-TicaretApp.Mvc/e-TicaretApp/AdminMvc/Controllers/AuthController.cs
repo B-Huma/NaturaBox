@@ -35,7 +35,29 @@ namespace AdminMvc.Controllers
                 Email = loginModel.Email,
                 Password = loginModel.Password,
             });
-            return RedirectToAction("Index", "Home");
+            if (token != null)
+            {
+                // 1. Create claims
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, loginModel.Email),
+            // Add more claims as needed, e.g. roles, user id, etc.
+        };
+
+                // 2. Create identity and principal
+                var identity = new ClaimsIdentity(claims, "access-token");
+                var principal = new ClaimsPrincipal(identity);
+
+                // 3. Sign in with the same scheme name as in Program.cs
+                await HttpContext.SignInAsync("access-token", principal);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(loginModel);
+            }
         }
 
         [Route("/logout")]
