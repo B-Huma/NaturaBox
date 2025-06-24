@@ -30,7 +30,7 @@ namespace App.DataApi.Controllers
             var user = await _user.GetById(userId);
             if (user == null)
             {
-                return NotFound("Could not find the user");
+                return RedirectToAction("Login", "Auth");
             }
 
             var cartItems = await _repo.GetCartDetails(userId);

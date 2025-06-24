@@ -50,7 +50,7 @@ namespace AdminMvc.Controllers
 
             await _service.CreateCategory(categoryDTO); 
 
-            return RedirectToAction("List", "Product");
+            return RedirectToAction("List", "Category");
         }
 
         [HttpGet("/category/edit/{id}")]
@@ -83,7 +83,7 @@ namespace AdminMvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
-            await _service.GetCategoryById(id);
+            await _service.DeleteCategory(id);
             return RedirectToAction("List", "Category");
         }
     }

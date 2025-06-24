@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace AdminMvc.Controllers
@@ -30,34 +31,35 @@ namespace AdminMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] LoginViewModel loginModel)
         {
-            var token = await _auth.LoginRequestAsync(new LoginRequestDTO
-            {
-                Email = loginModel.Email,
-                Password = loginModel.Password,
-            });
-            if (token != null)
-            {
-                // 1. Create claims
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, loginModel.Email),
-            // Add more claims as needed, e.g. roles, user id, etc.
-        };
+            var dto = _mapper.Map<LoginRequestDTO>(loginModel);
+            var loginResponse = await _auth.LoginRequestAsync(dto);
 
-                // 2. Create identity and principal
-                var identity = new ClaimsIdentity(claims, "access-token");
-                var principal = new ClaimsPrincipal(identity);
-
-                // 3. Sign in with the same scheme name as in Program.cs
-                await HttpContext.SignInAsync("access-token", principal);
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
+            if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                ModelState.AddModelError("", "Invalid Credentials");
                 return View(loginModel);
             }
+
+            // JWT token'dan claims'leri çıkar ve ClaimsPrincipal oluştur
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(loginResponse.Token);
+
+            var claims = jwtToken.Claims;
+            var identity = new ClaimsIdentity(claims, "access-token");
+            var principal = new ClaimsPrincipal(identity);
+
+            // Kullanıcıyı giriş yaptır
+            await HttpContext.SignInAsync("access-token", principal);
+
+            Response.Cookies.Append("access-token", loginResponse.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = loginResponse.ExpiresAt
+            });
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Route("/logout")]
@@ -66,6 +68,11 @@ namespace AdminMvc.Controllers
         {
             await _auth.Logout();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public async Task<IActionResult> AccessDenied()
+        {
+            return View();
         }
     }
 }

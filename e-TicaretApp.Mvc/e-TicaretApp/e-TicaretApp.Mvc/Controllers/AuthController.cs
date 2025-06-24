@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -58,6 +59,17 @@ namespace e_TicaretApp.Mvc.Controllers
                 ModelState.AddModelError("", "Invalid Credentials");
                 return View(loginModel);
             }
+
+            // JWT token'dan claims'leri çıkar ve ClaimsPrincipal oluştur
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(loginResponse.Token);
+
+            var claims = jwtToken.Claims;
+            var identity = new ClaimsIdentity(claims, "access-token");
+            var principal = new ClaimsPrincipal(identity);
+
+            // Kullanıcıyı giriş yaptır
+            await HttpContext.SignInAsync("access-token", principal);
 
             Response.Cookies.Append("access-token", loginResponse.Token, new CookieOptions
             {

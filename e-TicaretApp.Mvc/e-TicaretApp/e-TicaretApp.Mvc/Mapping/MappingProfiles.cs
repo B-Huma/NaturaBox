@@ -32,6 +32,9 @@ namespace e_TicaretApp.Mvc.Mapping
                      src.Images.FirstOrDefault().Url ?? "/assets/img/default-product.png"));
             CreateMap<ProductViewDTO, MyProductsViewModel>().ReverseMap();
             CreateMap<LoginViewModel, LoginRequestDTO>().ReverseMap();
+            CreateMap<ProductDTO, ProductViewModel>().ReverseMap();
+            CreateMap<ProductImageDTO, ImageViewModel>().ReverseMap();
+            CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
         }
     }
 }

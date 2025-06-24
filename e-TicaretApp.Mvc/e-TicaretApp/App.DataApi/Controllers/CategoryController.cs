@@ -23,7 +23,7 @@ namespace App.DataApi.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("categoryList")]
         public async Task<IActionResult> Get()
         {
             var categories = await _repository.GetCategoriesAsync();
@@ -46,7 +46,7 @@ namespace App.DataApi.Controllers
             var categoryDTO = _mapper.Map<CategoryDTO>(category);
             return Ok(categoryDTO);
         }
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create(CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid)
@@ -57,7 +57,7 @@ namespace App.DataApi.Controllers
             await _repository.AddCategoryAsync(newCategory);
             return CreatedAtAction(nameof(GetById), new {id = newCategory.Id}, categoryDTO);
         }
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid)
@@ -73,7 +73,7 @@ namespace App.DataApi.Controllers
             await _repository.UpdateAsync(updatedCategory);
             return NoContent();
         }
-        [HttpDelete]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.DeleteCategoryAsync(id);

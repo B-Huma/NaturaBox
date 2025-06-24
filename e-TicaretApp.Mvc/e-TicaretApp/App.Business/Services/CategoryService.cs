@@ -20,7 +20,7 @@ namespace App.Business.Services
         }        
         public async Task<List<CategoryDTO>> GetCategories()
         {
-            var response = await _client.GetAsync("Category/Get");
+            var response = await _client.GetAsync("Category/categoryList");
             if (!response.IsSuccessStatusCode)
             {
                 throw new InvalidOperationException();

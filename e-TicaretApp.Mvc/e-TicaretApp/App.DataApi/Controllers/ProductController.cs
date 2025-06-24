@@ -28,7 +28,7 @@ namespace App.DataApi.Controllers
             _category = category;
             _repo = repo;
         }
-        [HttpGet]
+        [HttpGet("ShopListing")]
         public async Task<ShopDTO> ShopListing()
         {
             var products = await _repo.GetAllWithCategoryAndSeller();
@@ -54,7 +54,7 @@ namespace App.DataApi.Controllers
             var dto = _mapper.Map<ProductDetailDTO>(product);
             return Ok(dto);
         }
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create(ProductCreateDTO dto)
         {
             if (dto == null) return BadRequest();
@@ -119,7 +119,7 @@ namespace App.DataApi.Controllers
             await _repo.UpdateAsync(existing);
             return NoContent();
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _repo.GetProduct(id);

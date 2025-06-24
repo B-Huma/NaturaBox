@@ -35,7 +35,7 @@ namespace App.DataApi.Controllers
             var userDTO = _mapper.Map<List<AdminUserDTO>>(users);
             return Ok(userDTO);
         }
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id)
         {
             var user = await _repo.GetByIdAsync(id);
@@ -47,7 +47,7 @@ namespace App.DataApi.Controllers
             await _repo.UpdateAsync(user);
             return Ok();
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _repo.GetByIdAsync(id);

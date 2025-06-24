@@ -11,14 +11,15 @@ namespace App.DataApi.Mapping
             CreateMap<CategoryEntity, CategoryDTO>().ReverseMap();
             CreateMap<ProductCommentEntity, AdminProductCommentDTO>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
-                .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+                .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName)).ReverseMap();
             CreateMap<ProductEntity, ProductDTO>().ReverseMap();
             CreateMap<CategoryEntity, CategoryDTO>().ReverseMap();
             CreateMap<CartItemEntity, CartItemDTO>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price))
                 .ReverseMap();
-            CreateMap<UserEntity, AdminUserDTO>().ReverseMap();
+            CreateMap<UserEntity, AdminUserDTO>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.Name));
             CreateMap<RegisterRequestDTO, UserEntity>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => 3));
             CreateMap<ProductCommentEntity, SaveProductCommentDTO>().ReverseMap();

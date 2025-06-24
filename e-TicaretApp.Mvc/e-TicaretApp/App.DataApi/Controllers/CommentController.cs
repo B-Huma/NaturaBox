@@ -24,8 +24,7 @@ namespace App.DataApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("comment")]
+        [HttpGet("comment")]
         public async Task<IActionResult> Get()
         {
             var comments = await _repo.GetAllComments();
@@ -33,12 +32,11 @@ namespace App.DataApi.Controllers
             {
                 throw new Exception("Could not find any comments");
             }
-            var commentDTO = _mapper.Map<AdminProductCommentDTO>(comments);
+            var commentDTO = _mapper.Map<List<AdminProductCommentDTO>>(comments);
             return Ok(commentDTO);
 
         }
-        [HttpGet]
-        [Route("comment/unapproved")]
+        [HttpGet("comment/unapproved")]
         public async Task<IActionResult> GetUnapproved()
         {
             var comments = await _repo.GetAllUnapprovedComments();
@@ -46,20 +44,20 @@ namespace App.DataApi.Controllers
             {
                 return NotFound();
             }
-            var commentDTO = _mapper.Map<AdminProductCommentDTO>(comments);
+            var commentDTO = _mapper.Map<List<AdminProductCommentDTO>>(comments);
             return Ok(commentDTO);
         }
-        [HttpPut("{id}")]
+        [HttpPut("ApproveComment/{id}")]
         public async Task ApproveComment(int id)
         {
             await _repo.ApproveComment(id);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task Delete(int id)
         {
             await _repo.DeleteComment(id);
         }
-        [HttpPost("{productId}")]
+        [HttpPost("ProductComment/{productId}")]
         public async Task<IActionResult> ProductComment(int productId, SaveProductCommentDTO dto)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -119,7 +119,7 @@ namespace App.DataApi.Controllers
                 issuer: "NaturaBox",
                 audience: "Api",
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

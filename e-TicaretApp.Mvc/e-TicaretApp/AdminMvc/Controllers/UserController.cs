@@ -30,7 +30,7 @@ namespace AdminMvc.Controllers
                 Role =  dto.Role,
                 Enabled = dto.Enabled
             }).ToList();
-            return View(users);
+            return View(viewModel);
         }
         [HttpGet]
         public async Task<IActionResult> UnApprovedUser()
@@ -45,7 +45,7 @@ namespace AdminMvc.Controllers
                 Role = dto.Role,
                 Enabled = dto.Enabled
             }).ToList();
-            return View(users);
+            return View(viewModel);
         }
 
         [HttpGet]
