@@ -26,22 +26,26 @@ namespace App.DataApi.Controllers
         [HttpGet("CartDetails")]
         public async Task<ActionResult<List<CartItemDTO>>> Get()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdStr))
+                return Ok(new List<CartItemDTO>());
+
+            var userId = int.Parse(userIdStr);
             var user = await _user.GetById(userId);
+
             if (user == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
+                return Ok(new List<CartItemDTO>());
 
             var cartItems = await _repo.GetCartDetails(userId);
-            if (cartItems == null)
-            {
-                return NotFound("Cart is empty");
-            }
-            var cartItemDTO= _mapper.Map<List<CartItemDTO>>(cartItems);
+
+            if (cartItems == null || !cartItems.Any())
+                return Ok(new List<CartItemDTO>());
+
+            var cartItemDTO = _mapper.Map<List<CartItemDTO>>(cartItems);
             return Ok(cartItemDTO);
         }
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add(CartItemDTO cartItem)
         {
             if (!User.Identity.IsAuthenticated)

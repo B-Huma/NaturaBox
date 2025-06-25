@@ -24,7 +24,7 @@ namespace e_TicaretApp.Mvc.Controllers
         public async Task<IActionResult> CartDetails()
         {            
             var cartItems = await _service.CartDetails();
-            var viewModel = _mapper.Map<CartItemViewModel>(cartItems);
+            var viewModel = _mapper.Map<List<CartItemViewModel>>(cartItems);
             return View(viewModel);
         }
 

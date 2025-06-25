@@ -23,10 +23,10 @@ namespace App.Business.Services
             var response = await _client.GetAsync("CartItem/CartDetails");
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException();
+                return new List<CartItemDTO>();
             }
-            var responseObject = await response.Content.ReadFromJsonAsync<List<CartItemDTO>>();
-            return responseObject;
+            var cartItems = await response.Content.ReadFromJsonAsync<List<CartItemDTO>>();
+            return cartItems ?? new List<CartItemDTO>();
         }
         public async Task<CartItemDTO> AddtoCart(CartItemDTO cartItem)
         {
