@@ -50,16 +50,16 @@ namespace App.DataApi.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return Unauthorized();
+                return Unauthorized("Login required");
             }
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
-                return Unauthorized();
+                return Unauthorized("Login required.");
             }
             var user = await _user.GetById(cartItem.UserId);
             if (user == null) return NotFound("Could not find user");
@@ -90,8 +90,9 @@ namespace App.DataApi.Controllers
                     ProductId = cartItem.ProductId,
                     Quantity = cartItem.Quantity
                 };
-                await _repo.AddProductToCart(newCartItem);
-                return Ok(cartItem);
+                var addedEntity = await _repo.AddProductToCart(newCartItem);
+                var dto = _mapper.Map<CartItemDTO>(addedEntity);
+                return Ok(dto);
             }
         }
         [HttpPut]

@@ -11,7 +11,7 @@ namespace App.Data.Repositories
     public interface ICartRepository : IDataRepository<CartItemEntity>
     {
         Task<IEnumerable<CartItemEntity>> GetCartDetails(int userId);
-        Task AddProductToCart(CartItemEntity entity);
+        Task<CartItemEntity> AddProductToCart(CartItemEntity entity);
         Task EditCartItemsQuantity(CartItemEntity entity);
         Task DeleteProductFromCart(int productId);
         Task RemoveCartItems(IEnumerable<CartItemEntity> cartItems);
@@ -28,9 +28,10 @@ namespace App.Data.Repositories
                 .Where(x=>x.UserId == userId)
                 .ToListAsync();
         }
-        public async Task AddProductToCart(CartItemEntity entity)
+        public async Task<CartItemEntity> AddProductToCart(CartItemEntity entity)
         {
             await AddAsync(entity);
+            return entity;
         }
 
         public async Task EditCartItemsQuantity(CartItemEntity entity)

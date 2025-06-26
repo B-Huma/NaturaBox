@@ -35,12 +35,11 @@
 					<p class="single-product-pricing"><span>Per Kg</span> @Model.Price</p>
 					<p>@Model.Details</p>
 					<div class="single-product-form">
-						<form asp-controller="Cart" asp-action="AddProduct">
+						<form asp-controller="Cart" asp-action="AddProduct" method="post">
 							<input type="hidden" name="productId" value="@Model.Id" />
 							<input type="number" name="quantity" value="1" min="1">
-@* 							<button type="submit" class="cart-btn" ><i class="fas fa-shopping-cart">Add to Cart</i></button>
- *@						</form>
-						<a asp-controller="Cart" asp-action="AddProduct" asp-route-productId="@Model.Id" asp-route-quantity="1"  class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<button type="submit" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						</form>
 						<p><strong>Categories: </strong>@Model.CategoryName</p>
 					</div>
 					<h4>Share:</h4>

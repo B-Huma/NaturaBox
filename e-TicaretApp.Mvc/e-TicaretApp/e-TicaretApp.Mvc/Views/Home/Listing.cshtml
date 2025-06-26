@@ -48,7 +48,11 @@
 						</div>
 						<h3>@item.Name</h3>
 						<p class="product-price"><span>Per Kg</span> @item.Price </p>
-						<a asp-controller="Cart" asp-action="AddProduct" asp-route-productId="@item.Id" asp-route-quantity="1" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<form asp-controller="Cart" asp-action="AddProduct" method="post" style="display: inline;">
+							<input type="hidden" name="productId" value="@item.Id" />
+							<input type="hidden" name="quantity" value="1" />
+							<button type="submit" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						</form>
 					</div>
 				</div>
 			}

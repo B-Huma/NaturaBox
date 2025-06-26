@@ -28,13 +28,17 @@ namespace e_TicaretApp.Mvc.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> AddProduct(int productId, byte quantity)
-        {               
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Auth");
+            var userId = int.Parse(userIdStr);
             var dto = new CartItemDTO
             {
                 ProductId = productId,
-                Quantity = quantity
+                Quantity = quantity,
+                UserId = userId
             };
             await _service.AddtoCart(dto);
             return RedirectToAction("CartDetails");

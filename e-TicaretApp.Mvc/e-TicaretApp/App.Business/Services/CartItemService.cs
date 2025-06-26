@@ -18,6 +18,7 @@ namespace App.Business.Services
         {
             _client = factory.CreateClient("data-api");
         }
+
         public async Task<List<CartItemDTO>> CartDetails()
         {
             var response = await _client.GetAsync("CartItem/CartDetails");
@@ -33,7 +34,7 @@ namespace App.Business.Services
             var response = await _client.PostAsJsonAsync("CartItem/Add", cartItem);
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException();
+                throw new Exception("Please login first to add a product to your cart.");
             }
             return await response.Content.ReadFromJsonAsync<CartItemDTO>();
         }

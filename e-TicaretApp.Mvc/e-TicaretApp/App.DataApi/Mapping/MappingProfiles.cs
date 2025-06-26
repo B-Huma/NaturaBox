@@ -45,7 +45,9 @@ namespace App.DataApi.Mapping
             CreateMap<ProductEntity, ProductDTO>();
             CreateMap<ProductImageEntity, ProductImageDTO>();
             CreateMap<UserEntity, UserDTO>().ReverseMap();
-
+            CreateMap<CartItemEntity, CartItemDTO>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price)).ReverseMap();
 
         }
     }

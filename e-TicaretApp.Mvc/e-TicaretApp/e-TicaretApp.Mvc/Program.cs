@@ -1,4 +1,5 @@
 using App.Business.Services;
+using e_TicaretApp.Mvc;
 using e_TicaretApp.Mvc.Mapping;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication("access-token")
     .AddCookie("access-token", options =>
@@ -18,12 +21,14 @@ builder.Services.AddAuthentication("access-token")
 builder.Services.AddHttpClient("data-api", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7196/api/");
-});
+}).AddHttpMessageHandler<AuthenticationHandler>();
+
 builder.Services.AddHttpClient("api-file", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7119/api/");
 });
 
+builder.Services.AddTransient<AuthenticationHandler>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CartItemService>();
