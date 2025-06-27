@@ -48,7 +48,10 @@ namespace App.DataApi.Mapping
             CreateMap<CartItemEntity, CartItemDTO>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price)).ReverseMap();
-
+            CreateMap<ProductEntity, ProductViewDTO>()
+                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src =>
+                     src.Images.FirstOrDefault().Url ?? "/assets/img/default-product.png"));
         }
     }
 }

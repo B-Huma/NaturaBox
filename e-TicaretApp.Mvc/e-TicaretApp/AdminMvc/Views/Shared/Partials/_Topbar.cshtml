@@ -197,10 +197,14 @@
                     Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" asp-controller="Auth" asp-action="Logout"  data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
+                <form asp-controller="Auth" asp-action="Logout" method="post" style="display: block;">
+                    <button type="submit" class="dropdown-item d-flex align-items-center"
+                            style="background: none; border: none; width: 100%; text-align: left; padding: 0.25rem 1.5rem;">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </button>
+                </form>
+
             </div>
         </li>
 

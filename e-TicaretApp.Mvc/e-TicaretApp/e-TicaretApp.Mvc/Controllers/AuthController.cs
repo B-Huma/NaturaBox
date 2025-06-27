@@ -114,9 +114,10 @@ namespace e_TicaretApp.Mvc.Controllers
             return RedirectToAction("Details", "Profile", new { id = model.UserId });
         }
         [Authorize]
-        [HttpPost("/logout")]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync("access-token");
             await _auth.Logout();
             return RedirectToAction("Index", "Home");
         }

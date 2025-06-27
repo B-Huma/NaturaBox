@@ -33,7 +33,21 @@
                                     {
                                         var userId = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
                                         <a asp-controller="Profile" asp-action="Details" asp-route-id="@userId"><i class="fa fa-user-circle"></i> Profile</a>
-                                        <a asp-controller="Auth" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                        @* <a asp-controller="Auth" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a> *@
+                                        <form asp-controller="Auth" asp-action="Logout" method="post" style="display:inline;">
+                                            <button type="submit" style="
+                                                 background: none;
+                                                 border: none;
+                                                 color: white;
+                                                 font: bold;
+                                                 cursor: pointer;
+                                                 padding: 0;
+                                                 margin: 0;
+                                                 display: inline;">
+                                                <i class="fas fa-sign-out-alt"></i> Logout
+                                            </button>
+                                        </form>
+
                                     }
                                     else
                                     {

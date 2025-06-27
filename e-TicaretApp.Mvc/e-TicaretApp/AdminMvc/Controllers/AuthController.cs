@@ -4,6 +4,7 @@ using App.Data.Data;
 using App.DTO.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,11 +62,11 @@ namespace AdminMvc.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-        [Route("/logout")]
-        [HttpGet]
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync("access-token");
             await _auth.Logout();
             return RedirectToAction("Index", "Home");
         }

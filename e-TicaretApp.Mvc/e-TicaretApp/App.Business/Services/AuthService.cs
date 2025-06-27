@@ -51,7 +51,7 @@ namespace App.Business.Services
         }
         public async Task Logout()
         {
-            var response = await _client.DeleteAsync("Auth/Logout");
+            var response = await _client.PostAsync("Auth/Logout",null);
 
             if (!response.IsSuccessStatusCode)
             {

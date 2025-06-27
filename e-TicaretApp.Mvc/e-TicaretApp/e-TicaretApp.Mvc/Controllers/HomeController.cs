@@ -45,7 +45,7 @@ namespace e_TicaretApp.Mvc.Controllers
 
         public async Task<IActionResult> ProductDetail(int id)
         {
-            var dto = _productService.GetProductDetail(id);
+            var dto = await _productService.GetProductDetail(id);
             var viewModel = _mapper.Map<ProductDetailViewModel>(dto);
             return View(viewModel);
         }
