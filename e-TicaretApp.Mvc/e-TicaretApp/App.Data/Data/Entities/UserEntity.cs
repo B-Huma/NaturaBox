@@ -47,7 +47,7 @@ namespace App.Data.Data.Entities
                 .IsRequired();
             builder.Property(nameof(UserEntity.Enabled))
                 .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(false);
             builder.Property(nameof(UserEntity.CreatedAt))
                 .IsRequired();
 

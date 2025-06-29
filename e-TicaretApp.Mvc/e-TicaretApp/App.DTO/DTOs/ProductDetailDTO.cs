@@ -19,6 +19,8 @@ namespace App.DTO.DTOs
         [Required]
         public string? ImageUrl { get; set; }
         public string? CategoryName { get; set; }
+        public int CategoryId { get; set; }
+        public byte StockAmount { get; set; }
 
         public List<ProductCommentDTO> Comments { get; set; }
     }

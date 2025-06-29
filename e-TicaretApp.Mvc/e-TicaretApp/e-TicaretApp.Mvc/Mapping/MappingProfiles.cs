@@ -14,11 +14,12 @@ namespace e_TicaretApp.Mvc.Mapping
             CreateMap<RegisterViewModel, RegisterRequestDTO>().ReverseMap();
             CreateMap<ChangePasswordDTO, ChangePasswordViewModel>().ReverseMap();
             CreateMap<ProductDetailDTO, ProductDetailViewModel>().ReverseMap();
+            CreateMap<ProductDetailDTO, ProductUpdateViewModel>();
             CreateMap<ProductCommentDTO, ProductCommentViewModel>();
             CreateMap<ProductUpdateDTO, ProductUpdateViewModel>().ReverseMap();
             CreateMap<ProductUpdateViewModel, ProductUpdateDTO>();
             CreateMap<ProductUpdateViewModel, ProductUpdateDTO>().ReverseMap()
-                .ForMember(dest => dest.CurrentImageUrl, opt => opt.Ignore());
+                .ForMember(dest => dest.ImageUrl, opt => opt.Ignore());
             CreateMap<SaveProductCommentDTO, SaveProductCommentViewModel>().ReverseMap();
             CreateMap<OrderCreateViewModel,OrderDTO>().ReverseMap();
             CreateMap<CartItemViewModel, OrderCreateViewModel>().ReverseMap();
@@ -31,6 +32,9 @@ namespace e_TicaretApp.Mvc.Mapping
             CreateMap<ProductDTO, ProductViewModel>().ReverseMap();
             CreateMap<ProductImageDTO, ImageViewModel>().ReverseMap();
             CreateMap<CategoryDTO, CategoryViewModel>().ReverseMap();
+            CreateMap<UserEditDTO, EditViewModel>().ReverseMap();
+            CreateMap<ProductViewDTO, ProductTableItem>().ReverseMap();
+            CreateMap<ProductCreateViewModel, ProductCreateDTO>().ReverseMap();
         }
     }
 }

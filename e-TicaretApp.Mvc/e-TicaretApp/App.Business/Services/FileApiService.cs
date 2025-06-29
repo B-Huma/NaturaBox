@@ -20,6 +20,8 @@ namespace App.Business.Services
 
         public async Task<string?> UploadFileAsync(IFormFile file)
         {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file), "Dosya null gönderildi");
             using var content = new MultipartFormDataContent();
 
             using var ms = new MemoryStream();

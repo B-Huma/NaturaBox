@@ -43,7 +43,8 @@ namespace App.Business.Services
             var response = await _client.PutAsJsonAsync("CartItem/Update", dto);
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException();
+                var error = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"API hatası: {response.StatusCode}, {error}");
             }
         }
         public async Task DeleteCartItem(int productId)

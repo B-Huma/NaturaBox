@@ -36,6 +36,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductCommentService>();
 builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<FileApiService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 var app = builder.Build();

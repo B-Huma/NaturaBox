@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace App.DataApi.Controllers
 {
@@ -21,8 +23,9 @@ namespace App.DataApi.Controllers
         private readonly IProductRepository _repo;
         private readonly FileApiService _fileApiService;
 
-        public ProductController(IProductRepository repo, IAdminCategoryRepository category, IUserRepository user, IMapper mapper)
+        public ProductController(IProductRepository repo, IAdminCategoryRepository category, IUserRepository user, IMapper mapper, FileApiService fileApiService)
         {
+            _fileApiService = fileApiService;
             _user = user;
             _mapper = mapper;
             _category = category;
@@ -55,7 +58,7 @@ namespace App.DataApi.Controllers
             return Ok(dto);
         }
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(ProductCreateDTO dto)
+        public async Task<IActionResult> Create([FromForm]ProductCreateDTO dto)
         {
             if (dto == null) return BadRequest();
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -96,7 +99,7 @@ namespace App.DataApi.Controllers
             return StatusCode(201);
         }
         [HttpPut("edit/{id}")]
-        public async Task<IActionResult> Edit(int id, ProductUpdateDTO dto)
+        public async Task<IActionResult> Edit(int id, [FromForm] ProductUpdateDTO dto)
         {
             var existing = await _repo.GetByIdAsync(id);
             if (existing == null) return NotFound();

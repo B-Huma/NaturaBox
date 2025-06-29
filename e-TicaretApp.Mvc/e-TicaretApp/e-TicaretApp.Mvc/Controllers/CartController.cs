@@ -46,10 +46,14 @@ namespace e_TicaretApp.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int productId, byte quantity)
         {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Auth");
+            var userId = int.Parse(userIdStr);
             var dto = new UpdateCartItemDTO
             {
                 ProductId = productId,
-                Quantity = quantity
+                Quantity = quantity,
+                UserId = userId
             };
             await _service.UpdateCartQuantity(dto);            
             return RedirectToAction("CartDetails");

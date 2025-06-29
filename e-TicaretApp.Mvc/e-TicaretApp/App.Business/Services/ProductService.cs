@@ -40,21 +40,77 @@ namespace App.Business.Services
             var dto = await response.Content.ReadFromJsonAsync<ProductDetailDTO>();
             return dto;
         }
+        //public async Task Create(ProductCreateDTO dto)
+        //{
+        //    var response = await _client.PostAsJsonAsync("Product/Create", dto);
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        var error = await response.Content.ReadAsStringAsync();
+        //        throw new InvalidOperationException($"{error}");
+        //    }
+        //}
         public async Task Create(ProductCreateDTO dto)
         {
-            var response = await _client.PostAsJsonAsync("Product/Create", dto);
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(dto.Name), nameof(dto.Name));
+            content.Add(new StringContent(dto.Details), nameof(dto.Details));
+            content.Add(new StringContent(dto.CategoryId.ToString()), nameof(dto.CategoryId));
+            content.Add(new StringContent(dto.Price.ToString()), nameof(dto.Price));
+            content.Add(new StringContent(dto.StockAmount.ToString()), nameof(dto.StockAmount));
+
+            if (dto.ImageFile != null)
+            {
+                using var ms = new MemoryStream();
+                await dto.ImageFile.CopyToAsync(ms);
+                ms.Position = 0;
+
+                var streamContent = new StreamContent(ms);
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.ImageFile.ContentType);
+                content.Add(streamContent, nameof(dto.ImageFile), dto.ImageFile.FileName);
+            }
+
+            var response = await _client.PostAsync("Product/Create", content);
+
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync();
                 throw new InvalidOperationException($"{error}");
             }
         }
+
         public async Task Update(int id, ProductUpdateDTO dto)
         {
-            var response = await _client.PutAsJsonAsync($"Product/edit/{id}", dto);
+            using var content = new MultipartFormDataContent();
+
+            content.Add(new StringContent(dto.Id.ToString()), nameof(dto.Id));
+            content.Add(new StringContent(dto.Name), nameof(dto.Name));
+            content.Add(new StringContent(dto.Details), nameof(dto.Details));
+            content.Add(new StringContent(dto.CategoryId.ToString()), nameof(dto.CategoryId));
+            content.Add(new StringContent(dto.Price.ToString()), nameof(dto.Price));
+            content.Add(new StringContent(dto.StockAmount.ToString()), nameof(dto.StockAmount));
+
+            if (!string.IsNullOrEmpty(dto.ImageUrl))
+            {
+                content.Add(new StringContent(dto.ImageUrl), nameof(dto.ImageUrl));
+            }
+
+            if (dto.ImageFile != null)
+            {
+                using var ms = new MemoryStream();
+                await dto.ImageFile.CopyToAsync(ms);
+                ms.Position = 0;
+
+                var streamContent = new StreamContent(ms);
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.ImageFile.ContentType);
+                content.Add(streamContent, nameof(dto.ImageFile), dto.ImageFile.FileName);
+            }
+
+            var response = await _client.PutAsync($"Product/edit/{id}", content);
+
             if (!response.IsSuccessStatusCode)
             {
-                var error = await response.Content.ReadAsStringAsync ();
+                var error = await response.Content.ReadAsStringAsync();
                 throw new InvalidOperationException($"{error}");
             }
         }

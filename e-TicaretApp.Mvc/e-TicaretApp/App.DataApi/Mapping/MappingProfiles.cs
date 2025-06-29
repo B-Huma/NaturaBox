@@ -12,7 +12,7 @@ namespace App.DataApi.Mapping
             CreateMap<ProductCommentEntity, AdminProductCommentDTO>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName)).ReverseMap();
-            CreateMap<ProductEntity, ProductDTO>().ReverseMap();
+            CreateMap<ProductEntity, ProductDTO>();
             CreateMap<CategoryEntity, CategoryDTO>().ReverseMap();
             CreateMap<CartItemEntity, CartItemDTO>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
@@ -28,6 +28,10 @@ namespace App.DataApi.Mapping
                     opt.MapFrom(src => src.Images.FirstOrDefault().Url ?? "/assets/img/default-product.png"))
                 .ForMember(dest => dest.CategoryName, opt =>
                     opt.MapFrom(src => src.Category != null ? src.Category.Name : null))
+                .ForMember(dest => dest.CategoryId, opt =>
+                    opt.MapFrom(src => src.CategoryId))
+                .ForMember(dest => dest.StockAmount, opt =>
+                    opt.MapFrom(src => src.StockAmount))
                 .ForMember(dest => dest.Comments, opt =>
                     opt.MapFrom(src => src.Comments.Where(c => !c.IsConfirmed)));
             CreateMap<ProductCommentEntity, ProductCommentDTO>()
@@ -38,9 +42,7 @@ namespace App.DataApi.Mapping
             CreateMap<ProductEntity, ProductTableItemDTO>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src =>
-                    src.Images.FirstOrDefault() != null
-                        ? src.Images.FirstOrDefault().Url
-                        : "/assets/img/default-product.png"));
+                    src.Images.FirstOrDefault().Url ?? "/assets/img/default-product.png"));
             CreateMap<UserEntity, UserEditDTO>().ReverseMap();
             CreateMap<ProductEntity, ProductDTO>();
             CreateMap<ProductImageEntity, ProductImageDTO>();

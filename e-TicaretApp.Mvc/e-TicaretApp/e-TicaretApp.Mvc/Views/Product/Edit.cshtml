@@ -1,4 +1,4 @@
-﻿@model e_TicaretApp.Mvc.Models.ViewModels.ProductCreateViewModel
+﻿@model e_TicaretApp.Mvc.Models.ViewModels.ProductUpdateViewModel
 
 @{
 	ViewData["Title"] = "Edit Product";
@@ -58,7 +58,7 @@
 						<label asp-for="ImageFile" class="form-label">Product Image</label>
 						<input asp-for="ImageFile" type="file" class="form-control" />
 						<span class="text-muted"> Current Image
-							<img src="@Model.CurrentImageUrl" style="max-height:100px" class="mt-2" />
+							<img src="@Model.ImageUrl" style="max-height:100px" class="mt-2" />
 						</span>
 					</div>
 

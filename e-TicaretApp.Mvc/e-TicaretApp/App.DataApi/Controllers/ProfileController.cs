@@ -31,7 +31,7 @@ namespace App.DataApi.Controllers
             var dto =_mapper.Map<ExistingUserDTO>(user);
             return Ok(dto);
         }
-        [HttpPut("{id}")]
+        [HttpPut("EditProfile/{id}")]
         public async Task<IActionResult> EditProfile(int id,UserEditDTO dto)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -42,7 +42,7 @@ namespace App.DataApi.Controllers
             var user = await _user.UserIdExists(userId);
             if (user == null) return NotFound();
 
-            var entity = _mapper.Map<UserEntity>(user);
+            _mapper.Map(dto, user);
             await _user.UpdateUser(user);            
             return Ok(new { message = "Profile updated successfully." });
         }

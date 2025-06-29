@@ -25,6 +25,6 @@ namespace e_TicaretApp.Mvc.Models.ViewModels
 
         public IFormFile? ImageFile { get; set; }
         public List<SelectListItem> Categories { get; set; } = new();
-        public string? CurrentImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

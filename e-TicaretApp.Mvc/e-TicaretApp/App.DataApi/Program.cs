@@ -1,3 +1,4 @@
+using App.Business.Services;
 using App.Data;
 using App.Data.Data;
 using App.Data.Repositories;
@@ -25,6 +26,8 @@ builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddScoped<FileApiService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
@@ -62,6 +65,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
         options.MapInboundClaims = false;
     });
+
+builder.Services.AddHttpClient("api-file", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7119/api/");
+});
 
 var app = builder.Build();
 

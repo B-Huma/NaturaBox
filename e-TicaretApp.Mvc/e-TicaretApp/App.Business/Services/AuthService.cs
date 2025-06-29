@@ -56,7 +56,7 @@ namespace App.Business.Services
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync();
-                throw new InvalidOperationException($"{error}");
+                throw new InvalidOperationException(error);
             }
         }
     }

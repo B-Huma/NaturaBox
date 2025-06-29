@@ -95,7 +95,7 @@ namespace App.DataApi.Controllers
                 return Ok(dto);
             }
         }
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(UpdateCartItemDTO dto)
         {
             if (!User.Identity.IsAuthenticated)
@@ -119,7 +119,7 @@ namespace App.DataApi.Controllers
             }
             existingItem.Quantity = dto.Quantity;
             await _repo.EditCartItemsQuantity(existingItem);
-            return Ok();
+            return Ok(dto);
         }
         [HttpDelete("{productId}")]
         public async Task<IActionResult> Delete(int productId)
