@@ -29,6 +29,7 @@ namespace App.DTO.DTOs
         public byte StockAmount { get; set; }
 
         public IFormFile? ImageFile { get; set; }
+        public string? ImageUrl { get; set; }
     }
 
 }

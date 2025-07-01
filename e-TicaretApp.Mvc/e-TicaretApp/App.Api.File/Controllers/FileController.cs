@@ -26,10 +26,12 @@ namespace App.Api.File.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            var fileUrl = $"/uploads/{uniqueFileName}";
+            var baseUrl = "https://localhost:7119";
+            var fullUrl = $"{baseUrl}/uploads/{uniqueFileName}";
 
-            return Created(fileUrl, new { url = fileUrl });
+            return Ok(new { url = fullUrl });
         }
+
 
         [HttpGet("download")]
         public IActionResult Download([FromQuery] string fileName)

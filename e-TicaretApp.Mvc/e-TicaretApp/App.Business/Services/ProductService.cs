@@ -4,6 +4,7 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,15 +60,9 @@ namespace App.Business.Services
             content.Add(new StringContent(dto.Price.ToString()), nameof(dto.Price));
             content.Add(new StringContent(dto.StockAmount.ToString()), nameof(dto.StockAmount));
 
-            if (dto.ImageFile != null)
+            if (!string.IsNullOrEmpty(dto.ImageUrl))
             {
-                using var ms = new MemoryStream();
-                await dto.ImageFile.CopyToAsync(ms);
-                ms.Position = 0;
-
-                var streamContent = new StreamContent(ms);
-                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.ImageFile.ContentType);
-                content.Add(streamContent, nameof(dto.ImageFile), dto.ImageFile.FileName);
+                content.Add(new StringContent(dto.ImageUrl), nameof(dto.ImageUrl));
             }
 
             var response = await _client.PostAsync("Product/Create", content);
@@ -97,13 +92,14 @@ namespace App.Business.Services
 
             if (dto.ImageFile != null)
             {
-                using var ms = new MemoryStream();
+                var ms = new MemoryStream();
                 await dto.ImageFile.CopyToAsync(ms);
                 ms.Position = 0;
 
                 var streamContent = new StreamContent(ms);
-                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(dto.ImageFile.ContentType);
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(dto.ImageFile.ContentType);
                 content.Add(streamContent, nameof(dto.ImageFile), dto.ImageFile.FileName);
+
             }
 
             var response = await _client.PutAsync($"Product/edit/{id}", content);

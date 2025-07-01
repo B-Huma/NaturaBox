@@ -72,11 +72,6 @@ namespace App.DataApi.Controllers
             {
                 ModelState.AddModelError("", "User or category not found");
             }
-            string? image = null;
-            if (dto.ImageFile != null)
-            {
-                image = await _fileApiService.UploadFileAsync(dto.ImageFile);
-            }
             var product = new ProductEntity
             {
                 Name = dto.Name,
@@ -91,7 +86,7 @@ namespace App.DataApi.Controllers
                 {
                     new ProductImageEntity
                     {
-                        Url = image ?? "/assets/img/default-product.png"
+                        Url = dto.ImageUrl ?? "/assets/img/default-product.png"
                     }
                 }
             };
@@ -106,18 +101,35 @@ namespace App.DataApi.Controllers
 
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
+            Console.WriteLine($"Edit - Gelen ImageUrl: {dto.ImageUrl}");
+            Console.WriteLine($"Edit - Gelen ImageFile: {(dto.ImageFile != null ? "Var" : "Yok")}");
+
             existing.Name = dto.Name;
             existing.Details = dto.Details;
             existing.Price = dto.Price;
             existing.CategoryId = dto.CategoryId;
             existing.StockAmount = dto.StockAmount;
 
+            existing.Images = new List<ProductImageEntity>();
+            
             if (dto.ImageFile != null)
             {
                 var newImageUrl = await _fileApiService.UploadFileAsync(dto.ImageFile);
-                existing.Images.Clear();
                 existing.Images.Add(new ProductImageEntity { Url = newImageUrl });
+                Console.WriteLine($"Edit - Yeni upload edilen URL: {newImageUrl}");
             }
+            else if (!string.IsNullOrEmpty(dto.ImageUrl))
+            {
+                existing.Images.Add(new ProductImageEntity { Url = dto.ImageUrl });
+                Console.WriteLine($"Edit - Kullanılan ImageUrl: {dto.ImageUrl}");
+            }
+            else
+            {
+                existing.Images.Add(new ProductImageEntity { Url = "/assets/img/default-product.png" });
+                Console.WriteLine($"Edit - Default görsel kullanıldı");
+            }
+
+            Console.WriteLine($"Edit - Kaydedilen son URL: {existing.Images.FirstOrDefault()?.Url}");
 
             await _repo.UpdateAsync(existing);
             return NoContent();
