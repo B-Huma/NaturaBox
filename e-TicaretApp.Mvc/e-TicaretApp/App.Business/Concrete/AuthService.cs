@@ -1,4 +1,5 @@
-﻿using App.DTO.DTOs;
+﻿using App.Business.Abstract;
+using App.DTO.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly HttpClient _client;
 
@@ -41,7 +42,7 @@ namespace App.Business.Services
         }
         public async Task ChangePassword(ChangePasswordDTO dto)
         {
-            var response = await _client.PutAsJsonAsync("Auth/RenewPassword",dto);
+            var response = await _client.PutAsJsonAsync("Auth/RenewPassword", dto);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -51,7 +52,7 @@ namespace App.Business.Services
         }
         public async Task Logout()
         {
-            var response = await _client.PostAsync("Auth/Logout",null);
+            var response = await _client.PostAsync("Auth/Logout", null);
 
             if (!response.IsSuccessStatusCode)
             {

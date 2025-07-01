@@ -1,4 +1,5 @@
-using App.Business.Services;
+using App.Business.Abstract;
+using App.Business.Concrete;
 using e_TicaretApp.Mvc;
 using e_TicaretApp.Mvc.Mapping;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,14 +31,14 @@ builder.Services.AddHttpClient("api-file", client =>
 
 builder.Services.AddTransient<AuthenticationHandler>();
 
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<CartItemService>();
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<OrderService>();
-builder.Services.AddScoped<ProductCommentService>();
-builder.Services.AddScoped<ProfileService>();
-builder.Services.AddScoped<CategoryService>();
-builder.Services.AddScoped<FileApiService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICartItemService, CartItemService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProductCommentService, ProductCommentService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IFileApiService, FileApiService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 var app = builder.Build();
@@ -52,6 +53,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// Uploads klasörü için static file serving
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+    RequestPath = "/uploads"
+});
 
 app.UseRouting();
 

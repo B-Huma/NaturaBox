@@ -1,5 +1,5 @@
 ﻿using AdminMvc.Models.ViewModels;
-using App.Business.Services;
+using App.Business.Abstract;
 using App.Data.Data;
 using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +9,9 @@ namespace AdminMvc.Controllers
 {
     public class CommentController : Controller
     {
-        private readonly ProductCommentService _service;
+        private readonly IProductCommentService _service;
 
-        public CommentController(ProductCommentService service)
+        public CommentController(IProductCommentService service)
         {
             _service=service;
         }

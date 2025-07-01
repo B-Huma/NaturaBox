@@ -60,7 +60,7 @@
                                     </td>
                                     <td>@item.Quantity</td>
                                     <td>@item.UnitPrice.ToString("C")</td>
-                                    <td>@(item.UnitPrice* item.Quantity).ToString("C")</td>
+                                    <td>@((item.UnitPrice* item.Quantity).ToString("C"))</td>
                                 </tr>
                             }
                         </tbody>

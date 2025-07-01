@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using App.Business.Abstract;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class FileApiService
+    public class FileApiService : IFileApiService
     {
         private readonly HttpClient _client;
 

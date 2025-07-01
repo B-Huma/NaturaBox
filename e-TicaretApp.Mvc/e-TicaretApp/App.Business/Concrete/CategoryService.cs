@@ -1,4 +1,5 @@
-﻿using App.Data.Data.Entities;
+﻿using App.Business.Abstract;
+using App.Data.Data.Entities;
 using App.Data.Repositories;
 using App.DTO.DTOs;
 using System;
@@ -8,16 +9,16 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class CategoryService 
+    public class CategoryService : ICategoryService
     {
         private readonly HttpClient _client;
 
         public CategoryService(IHttpClientFactory factory)
         {
             _client = factory.CreateClient("data-api");
-        }        
+        }
         public async Task<List<CategoryDTO>> GetCategories()
         {
             var response = await _client.GetAsync("Category/categoryList");
@@ -31,8 +32,8 @@ namespace App.Business.Services
         }
         public async Task<CategoryDTO> GetCategoryById(int id)
         {
-            var response = await _client.GetFromJsonAsync<CategoryDTO>($"Category/{id}"); 
-            return response;              
+            var response = await _client.GetFromJsonAsync<CategoryDTO>($"Category/{id}");
+            return response;
         }
         public async Task CreateCategory(CategoryDTO dto)
         {

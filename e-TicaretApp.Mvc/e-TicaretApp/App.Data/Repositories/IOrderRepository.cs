@@ -25,13 +25,15 @@ namespace App.Data.Repositories
         }
 
         public async Task<IEnumerable<OrderEntity>> OrderDetailsAsync(int userId)
-        {
-            return await _dbSet
+        {            
+            var orders = await _dbSet
                 .Where(o => o.UserId == userId)
                 .Include(x => x.Items)
                 .ThenInclude(x => x.Product)
+                .ThenInclude(x=>x.Images)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
+            return orders;
         }
     }
 }

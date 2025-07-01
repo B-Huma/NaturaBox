@@ -52,6 +52,9 @@ namespace App.DataApi.Mapping
                  .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                  .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src =>
                      src.Images.FirstOrDefault().Url ?? "/assets/img/default-product.png"));
+            CreateMap<OrderEntity, OrderDTO>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+            CreateMap<OrderItemEntity, OrderItemDTO>();
         }
     }
 }

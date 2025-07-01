@@ -1,4 +1,5 @@
-﻿using App.Data.Data.Entities;
+﻿using App.Business.Abstract;
+using App.Data.Data.Entities;
 using App.Data.Repositories;
 using App.DTO.DTOs;
 using System;
@@ -8,9 +9,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class CartItemService
+    public class CartItemService : ICartItemService
     {
         private readonly HttpClient _client;
 

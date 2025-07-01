@@ -24,43 +24,63 @@ namespace App.DataApi.Controllers
             _repo = repo;
             _mapper = mapper;
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateOrder(OrderDTO dto)
+        [HttpPost("CreateOrder")]
+        public async Task<IActionResult> CreateOrder(OrderCreateDTO dto)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !int.TryParse(userIdClaim, out var userId))
+            try
             {
-                return Unauthorized();
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !int.TryParse(userIdClaim, out var userId))
+                {
+                    return Unauthorized();
+                }
+                var cartItems = await _cartRepo.GetCartDetails(userId);
+                if (cartItems == null)
+                {
+                    return NotFound();
+                }
+                var order = new OrderEntity
+                {
+                    UserId = userId,
+                    Address = dto.Address,
+                    OrderCode = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(),
+                    CreatedAt = DateTime.Now,
+                    Items = new List<OrderItemEntity>()
+                };
+                
+                Console.WriteLine($"Order oluşturuluyor...");
+                await _repo.CreateOrderAsync(order);
+                Console.WriteLine($"Order Id: {order.Id}");
+                
+                var orderItems = cartItems.Select(ci => new OrderItemEntity
+                {
+                    OrderId = order.Id,
+                    ProductId = ci.ProductId,
+                    Quantity = ci.Quantity,
+                    UnitPrice = ci.Product.Price
+                }).ToList();
+                
+                Console.WriteLine($"OrderItems Count: {orderItems.Count}");
+                Console.WriteLine($"First OrderId: {orderItems.First().OrderId}");
+                
+                await _orderItemRepo.AddRangeAsync(orderItems);
+                Console.WriteLine($"OrderItems kaydedildi");
+                
+                await _cartRepo.RemoveRange(cartItems);
+                
+                return Ok(new OrderResultDTO
+                {
+                    OrderCode = order.OrderCode
+                });
             }
-            var cartItems = await _cartRepo.GetCartDetails(userId);
-            if (cartItems == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                Console.WriteLine($"Hata: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                return BadRequest($"Hata: {ex.Message}");
             }
-            var order = new OrderEntity
-            {
-                UserId = userId,
-                Address = dto.Address,
-                OrderCode = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(),
-                CreatedAt = dto.CreatedAt,
-                Items = new List<OrderItemEntity>()
-            };
-            await _repo.CreateOrderAsync(order);
-            var orderItems = cartItems.Select(ci => new OrderItemEntity
-            {
-                OrderId = order.Id,
-                ProductId = ci.ProductId,
-                Quantity = ci.Quantity,
-                UnitPrice = ci.Product.Price
-            });
-            await _orderItemRepo.AddRangeAsync(orderItems);
-            _cartRepo.RemoveRange(cartItems);
-            return Ok(new OrderResultDTO
-            {
-                OrderCode = order.OrderCode
-            });
         }
-        [HttpGet]
+        [HttpGet("OrderDetails")]
         public async Task<IActionResult> OrderDetails()
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -69,6 +89,18 @@ namespace App.DataApi.Controllers
                 return Unauthorized();
             }
             var orders = await _repo.OrderDetailsAsync(userId);
+            Console.WriteLine($"Orders Count: {orders.Count()}");
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Order {order.Id} - Items Count: {order.Items?.Count ?? 0}");
+                if (order.Items != null)
+                {
+                    foreach (var item in order.Items)
+                    {
+                        Console.WriteLine($"  Item: ProductId={item.ProductId}, Product={item.Product?.Name}, Quantity={item.Quantity}");
+                    }
+                }
+            }
             var orderDto = orders.Select(order => new OrderDTO
             {
                 Id = order.Id,
@@ -77,10 +109,10 @@ namespace App.DataApi.Controllers
                 CreatedAt = order.CreatedAt,
                 Items = order.Items.Select(item => new OrderItemDTO
                 {
-                    ProductName = item.Product.Name,
-                    ImageUrl = item.Product.Images.FirstOrDefault().Url,
+                    ProductName = item.Product?.Name ?? "Ürün Adı Yok",
+                    ImageUrl = item.Product?.Images?.FirstOrDefault()?.Url ?? "",
                     Quantity = item.Quantity,
-                    UnitPrice = item.Product.Price
+                    UnitPrice = item.Product?.Price ?? 0
                 }).ToList()
             }).ToList();
             return Ok(orderDto);

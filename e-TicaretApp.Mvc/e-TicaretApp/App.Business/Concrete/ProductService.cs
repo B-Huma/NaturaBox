@@ -1,4 +1,5 @@
-﻿using App.Data.Repositories;
+﻿using App.Business.Abstract;
+using App.Data.Repositories;
 using App.DTO.DTOs;
 using AutoMapper;
 using System;
@@ -9,9 +10,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IMapper _mapper;
         private readonly HttpClient _client;

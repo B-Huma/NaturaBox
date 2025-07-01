@@ -1,5 +1,5 @@
 ﻿using AdminMvc.Models.ViewModels;
-using App.Business.Services;
+using App.Business.Abstract;
 using App.Data.Data;
 using App.Data.Data.Entities;
 using App.DTO.DTOs;
@@ -14,9 +14,9 @@ namespace AdminMvc.Controllers
     public class CategoryController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly CategoryService _service;
+        private readonly ICategoryService _service;
 
-        public CategoryController(CategoryService service, IMapper mapper)
+        public CategoryController(ICategoryService service, IMapper mapper)
         {
             _mapper = mapper;
             _service = service;

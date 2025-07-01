@@ -1,4 +1,4 @@
-﻿using App.Business.Services;
+﻿using App.Business.Abstract;
 using App.Data.Data;
 using App.Data.Data.Entities;
 using App.Data.Repositories;
@@ -12,20 +12,19 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace e_TicaretApp.Mvc.Controllers
 {
     public class ProductController : Controller
     {
         private readonly HttpClient _fileApiClient;
-        private readonly CategoryService _category;
-        private readonly ProductCommentService _comment;
+        private readonly ICategoryService _category;
+        private readonly IProductCommentService _comment;
         private readonly IMapper _mapper;
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
         private readonly HttpClient _httpClient;
 
-        public ProductController(ProductService productService, ProductCommentService comment, CategoryService category, IMapper mapper, IHttpClientFactory factory)
+        public ProductController(IProductService productService, IProductCommentService comment, ICategoryService category, IMapper mapper, IHttpClientFactory factory)
         {
             _fileApiClient = factory.CreateClient("api-file");
             _category = category;
@@ -76,10 +75,10 @@ namespace e_TicaretApp.Mvc.Controllers
                 fileApiResponse.EnsureSuccessStatusCode();
                 var uploadResult = await fileApiResponse.Content.ReadFromJsonAsync<UploadResponse>();
                 imageUrl = uploadResult?.url;
-                
-                // Debug için log
-                Console.WriteLine($"uploadResult.url: {uploadResult?.url}");
-                Console.WriteLine($"Final imageUrl: {imageUrl}");
+
+                // Loglama
+                Console.WriteLine($"UploadResult: {{ url = {uploadResult?.url} }}");
+                Console.WriteLine($"imageUrl: {imageUrl}");
             }
 
             var dto = _mapper.Map<ProductCreateDTO>(model);
@@ -103,11 +102,7 @@ namespace e_TicaretApp.Mvc.Controllers
                 Value = c.Id.ToString(),
                 Text = c.Name
             }).ToList();
-
-            // Görsel URL'sini tam adresle doldur
-            if (!string.IsNullOrEmpty(viewModel.ImageUrl) && !viewModel.ImageUrl.StartsWith("http"))
-                viewModel.ImageUrl = "https://localhost:7119" + viewModel.ImageUrl;
-
+            
             return View(viewModel);
         }
 
@@ -128,10 +123,6 @@ namespace e_TicaretApp.Mvc.Controllers
                 fileApiResponse.EnsureSuccessStatusCode();
                 var uploadResult = await fileApiResponse.Content.ReadFromJsonAsync<UploadResponse>();
                 imageUrl = uploadResult?.url;
-                
-                // Debug için log
-                Console.WriteLine($"Edit - uploadResult.url: {uploadResult?.url}");
-                Console.WriteLine($"Edit - Final imageUrl: {imageUrl}");
             }
 
             var dto = _mapper.Map<ProductUpdateDTO>(product);

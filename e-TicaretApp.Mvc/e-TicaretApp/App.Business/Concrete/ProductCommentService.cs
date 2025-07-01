@@ -1,4 +1,5 @@
-﻿using App.Data.Repositories;
+﻿using App.Business.Abstract;
+using App.Data.Repositories;
 using App.DTO.DTOs;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class ProductCommentService
+    public class ProductCommentService : IProductCommentService
     {
         private readonly IAdminCommentRepository _repo;
         private readonly HttpClient _client;
@@ -36,7 +37,7 @@ namespace App.Business.Services
                 throw new InvalidOperationException();
             }
             var responseObject = await response.Content.ReadFromJsonAsync<List<AdminProductCommentDTO>>();
-            return responseObject;                      
+            return responseObject;
         }
         public async Task Approve(int id)
         {

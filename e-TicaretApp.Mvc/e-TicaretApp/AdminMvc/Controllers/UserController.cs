@@ -1,5 +1,5 @@
 ﻿using AdminMvc.Models.ViewModels;
-using App.Business.Services;
+using App.Business.Abstract;
 using App.Data.Data;
 using App.DTO.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +10,9 @@ namespace AdminMvc.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }

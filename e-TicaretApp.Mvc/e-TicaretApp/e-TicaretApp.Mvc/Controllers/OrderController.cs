@@ -1,4 +1,4 @@
-﻿using App.Business.Services;
+﻿using App.Business.Abstract;
 using App.Data.Data;
 using App.Data.Data.Entities;
 using App.DTO.DTOs;
@@ -12,11 +12,11 @@ namespace e_TicaretApp.Mvc.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly CartItemService _cartItem;
+        private readonly ICartItemService _cartItem;
         private readonly IMapper _mapper;
-        private readonly OrderService _order;
+        private readonly IOrderService _order;
 
-        public OrderController(OrderService order, IMapper mapper, CartItemService cartItem)
+        public OrderController(IOrderService order, IMapper mapper, ICartItemService cartItem)
         {
             _cartItem = cartItem;
             _mapper = mapper;
@@ -25,22 +25,31 @@ namespace e_TicaretApp.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var cartItems = _cartItem.CartDetails;
-            var viewModel = _mapper.Map<CartItemViewModel>(cartItems);
+            var cartItems = await _cartItem.CartDetails();
+            var viewModel = _mapper.Map<List<CartItemViewModel>>(cartItems);
             ViewBag.CartItems = viewModel;
             return View(new OrderCreateViewModel());
         }
         [HttpPost]
         public async Task<IActionResult> Create(OrderCreateViewModel model)
         {
-            var dto = _mapper.Map<OrderDTO>(model);
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Auth");
+            var userId = int.Parse(userIdStr);
+            var dto = new OrderCreateDTO
+            {
+                UserId = userId,
+                Address = model.Address,
+                FullName = model.FullName
+            };
            var orderCode = await _order.CreateOrder(dto);
             return RedirectToAction("Success", new { orderCode });
         }
 
         public async Task<IActionResult> Details()
         {
-            var viewModel = await _order.OrderDetails();
+            var dtoList = await _order.OrderDetails();
+            var viewModel = _mapper.Map<List<OrderViewModel>>(dtoList);
             return View(viewModel);
         }
 

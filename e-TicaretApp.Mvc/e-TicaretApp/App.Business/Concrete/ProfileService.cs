@@ -1,4 +1,5 @@
-﻿using App.DTO.DTOs;
+﻿using App.Business.Abstract;
+using App.DTO.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Business.Services
+namespace App.Business.Concrete
 {
-    public class ProfileService
+    public class ProfileService : IProfileService
     {
         private readonly HttpClient _client;
 

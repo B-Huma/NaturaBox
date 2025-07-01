@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using App.Business.Services;
+using App.Business.Abstract;
 using App.Data.Data;
 using App.Data.Data.Entities;
 using App.DTO.DTOs;
@@ -16,9 +16,9 @@ namespace e_TicaretApp.Mvc.Controllers
     public class ProfileController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly ProfileService _profile;
+        private readonly IProfileService _profile;
 
-        public ProfileController(ProfileService profile, IMapper mapper)
+        public ProfileController(IProfileService profile, IMapper mapper)
         {
             _mapper = mapper;
             _profile = profile;

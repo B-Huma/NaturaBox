@@ -74,7 +74,7 @@ namespace App.Data.Repositories
 
         public async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            _dbSet.AddRangeAsync(entities);
+            await _dbSet.AddRangeAsync(entities);
             await _context.SaveChangesAsync();
         }
     }

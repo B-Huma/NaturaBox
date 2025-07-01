@@ -1,4 +1,5 @@
-using App.Business.Services;
+using App.Business.Abstract;
+using App.Business.Concrete;
 using App.Data;
 using App.Data.Data;
 using App.Data.Repositories;
@@ -26,8 +27,9 @@ builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
-builder.Services.AddScoped<FileApiService>();
+builder.Services.AddScoped<IFileApiService, FileApiService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 

@@ -1,5 +1,4 @@
-﻿using App.Business.Services;
-using App.Data.Data.Entities;
+﻿using App.Data.Data.Entities;
 using App.Data.Repositories;
 using App.DTO.DTOs;
 using AutoMapper;
@@ -10,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using App.Business.Abstract;
 
 namespace App.DataApi.Controllers
 {
@@ -21,9 +21,9 @@ namespace App.DataApi.Controllers
         private readonly IMapper _mapper;
         private readonly IAdminCategoryRepository _category;
         private readonly IProductRepository _repo;
-        private readonly FileApiService _fileApiService;
+        private readonly IFileApiService _fileApiService;
 
-        public ProductController(IProductRepository repo, IAdminCategoryRepository category, IUserRepository user, IMapper mapper, FileApiService fileApiService)
+        public ProductController(IProductRepository repo, IAdminCategoryRepository category, IUserRepository user, IMapper mapper, IFileApiService fileApiService)
         {
             _fileApiService = fileApiService;
             _user = user;

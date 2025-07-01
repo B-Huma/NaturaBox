@@ -48,7 +48,14 @@ namespace App.Data.Data.Entities
                 .WithMany(u => u.Orders)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
+                
+            builder.HasMany(d => d.Items)
+                .WithOne(i => i.Order)
+                .HasForeignKey(i => i.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
+            builder.Property(e => e.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

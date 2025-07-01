@@ -40,9 +40,9 @@ namespace App.Data.Data.Entities
                 .IsRequired();
 
             builder.HasOne(e => e.Order)
-                .WithMany()
+                .WithMany(o => o.Items)
                 .HasForeignKey(e => e.OrderId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(e => e.Product)
                 .WithMany()
